@@ -1,0 +1,18 @@
+﻿@model DmuStudent.DTO.StudentViewModel
+
+@{
+	ViewData["Title"] = "Delete";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("DeleteStudent", "Student"))
+{
+	<h4 class="modal-title">Delete Student</h4>
+
+	<div class="modal-body form-horizontal">
+		Are you want to delete @Model.FirstName @Model.LastName?
+	</div>
+	<a type="button" class="btn btn-secondary" asp-action="Index" asp-controller="Student">Close</a>
+	<button id="btnSubmit" class="btn btn-danger" type="submit" value="Submit" name="Action">Delete Student</button>
+
+} 

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DmuStudent.DTO.StudentViewModel>
+@using DmuStudent.Models
+
+<div class="top-buffer"></div>
+<div class="panel panel-primary">
+	<div class="panel-heading panel-head"> DMU Students</div>
+	<div class="panel-body">
+		<div class="btn-group">
+			<a type="button" class="btn btn-primary" asp-action="AddEditStudent"><i class="glyphicon glyphicon-plus"></i> Add Student</a>
+			<br />
+		</div>
+
+		<div class="top-buffer"></div>
+		<br />
+		<table class="table table-bordered table-striped table-condensed">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Enrollment No</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</td>
+						<td>@Html.DisplayFor(modelItem => item.Email)</td>
+						<td>@Html.DisplayFor(modelItem => item.EnrollmentNo)</td>
+						<td>
+							<a type="button" class="btn btn-primary" asp-action="AddEditStudent" asp-route-id="@item.Id"> Edit </a>
+							<a type="button" class="btn btn-danger" asp-action="DeleteStudent" asp-route-id="@item.Id"> Delete </a>
+						</td>
+					</tr>
+
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
