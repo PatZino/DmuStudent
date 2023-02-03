@@ -8,12 +8,10 @@ namespace DmuStudent.Controllers
 {
 	public class StudentController : Controller
     {
-        private IStudentRepository _studentRepository;
         private IStudentService _studentService;
 
-        public StudentController(IStudentRepository studentRepository, IStudentService studentService)
+        public StudentController(IStudentService studentService)
         {
-            _studentRepository = studentRepository;
             _studentService = studentService;
         }
 
