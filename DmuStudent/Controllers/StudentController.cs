@@ -37,7 +37,7 @@ namespace DmuStudent.Controllers
                     model.Email = student.Email;
                 }
             }
-            return PartialView("~/Views/Student/_AddEditStudent.cshtml", model);
+            return PartialView("~/Views/Student/AddEditStudent.cshtml", model);
         }
         [HttpPost]
         public ActionResult AddEditStudent(long? id, StudentViewModel model)
@@ -73,7 +73,7 @@ namespace DmuStudent.Controllers
                 FirstName = student.FirstName,
                 LastName = student.LastName,
             };
-            return PartialView("~/Views/Student/_DeleteStudent.cshtml", model);
+            return PartialView("~/Views/Student/DeleteStudent.cshtml", model);
         }
         [HttpPost]
         public IActionResult DeleteStudent(long id, StudentViewModel model)

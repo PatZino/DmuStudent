@@ -1,12 +1,18 @@
 ﻿@model IEnumerable<DmuStudent.DTO.StudentViewModel>
 
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var count = Model?.ToList().Count() ?? 0;
+}
+
 <div class="top-buffer"></div>
 <div class="panel panel-primary">
 	<div class="panel-heading panel-head"> DMU Students</div>
 	<div class="panel-body">
 		<div class="btn-group">
-			<a type="button" class="btn btn-primary" asp-action="AddEditStudent"><i class="glyphicon glyphicon-plus"></i> Add Student</a>
-			<br />
+			<a type="button" class="btn btn-primary" asp-action="AddEditStudent"> Add Student</a>
+			
+			<button class="btn btn-info m-1 p-2">Total Students: @count</button>
 		</div>
 
 		<div class="top-buffer"></div>
