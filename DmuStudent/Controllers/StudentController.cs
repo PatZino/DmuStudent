@@ -1,39 +1,26 @@
-﻿using AutoMapper;
-using DmuStudent.Contracts;
+﻿using DmuStudent.Contracts;
 using DmuStudent.DTO;
 using DmuStudent.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DmuStudent.Controllers
 {
-    public class StudentController : Controller
+	public class StudentController : Controller
     {
-        private readonly IMapper _mapper;
         private IStudentRepository _studentRepository;
+        private IStudentService _studentService;
 
-        public StudentController(IStudentRepository studentRepository, IMapper mapper)
+        public StudentController(IStudentRepository studentRepository, IStudentService studentService)
         {
-            _mapper = mapper;
             _studentRepository = studentRepository;
+            _studentService = studentService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var getStudents = _studentRepository.GetAllStudents();
-			IEnumerable<StudentViewModel> model = _studentRepository.GetAllStudents().Select(s => new StudentViewModel
-			{
-				Id = s.Id,
-				FirstName = s.FirstName,
-				LastName = s.LastName,
-				EnrollmentNo = s.EnrollmentNo,
-				Email = s.Email
-			});
+            var model = _studentService.GetAllStudents();
 			return View(nameof(Index), model);
         }
 
@@ -43,7 +30,7 @@ namespace DmuStudent.Controllers
             StudentViewModel model = new StudentViewModel();
             if (id.HasValue)
             {
-                Student student = _studentRepository.GetStudent(id.Value); if (student != null)
+                Student student = _studentService.GetStudent(id.Value); if (student != null)
                 {
                     model.Id = student.Id;
                     model.FirstName = student.FirstName;
@@ -62,23 +49,13 @@ namespace DmuStudent.Controllers
                 if (ModelState.IsValid)
                 {
                     bool isNew = !id.HasValue;
-                    Student student = isNew ? new Student
-                    {
-                        AddedDate = DateTime.UtcNow
-                    } : _studentRepository.GetStudent(id.Value);
-                    student.FirstName = model.FirstName;
-                    student.LastName = model.LastName;
-                    student.EnrollmentNo = model.EnrollmentNo;
-                    student.Email = model.Email;
-                    student.IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-                    student.ModifiedDate = DateTime.UtcNow;
                     if (isNew)
                     {
-                        _studentRepository.SaveStudent(student);
+                        _studentService.SaveStudent(model);
                     }
                     else
                     {
-                        _studentRepository.UpdateStudent(student);
+                        _studentService.UpdateStudent(model, id);
                     }
                 }
             }
@@ -92,7 +69,7 @@ namespace DmuStudent.Controllers
         [HttpGet]
         public IActionResult DeleteStudent(long id)
         {
-            Student student = _studentRepository.GetStudent(id);
+            Student student = _studentService.GetStudent(id);
             StudentViewModel model = new StudentViewModel
             {
                 FirstName = student.FirstName,
@@ -103,7 +80,7 @@ namespace DmuStudent.Controllers
         [HttpPost]
         public IActionResult DeleteStudent(long id, StudentViewModel model)
         {
-            _studentRepository.DeleteStudent(id);
+            _studentService.DeleteStudent(id);
             return RedirectToAction(nameof(Index));
         }
     }
